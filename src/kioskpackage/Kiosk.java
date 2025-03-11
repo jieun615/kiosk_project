@@ -1,51 +1,58 @@
 package kioskpackage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Kiosk {
-    private List<MenuItem> menuItems;
+    private List<Menu> menus;
     private Scanner scanner;
 
-    public Kiosk(List<MenuItem> menuItems) {
-        this.menuItems = menuItems;
-        this.scanner = new Scanner(System.in);
+    public Kiosk() {
+        menus = new ArrayList<>();
+        scanner = new Scanner(System.in);
+    }
+
+    public void addMenu(Menu menu) {
+        menus.add(menu);
     }
 
     public void start() {
 
         while (true) {
-            System.out.println("\n[ SHAKESHACK MENU ]");
+            System.out.println("\n[ SHAKESHACK Kiosk ]");
 
-            for(int i = 0; i < menuItems.size(); i++) {
-                System.out.println((i + 1) + ". " + menuItems.get(i));
+            for (int i = 0; i < menus.size(); i++) {
+                System.out.println((i + 1) + ". " + menus.get(i).getCategoryName());
             }
             System.out.println("0. 종료      | 종료");
+            System.out.print("카테고리를 선택하세요: ");
 
-            System.out.print("메뉴 번호를 입력하세요: ");
-            int num = scanner.nextInt();
-
-            switch (num) {
-                case 1:
-                    System.out.println("1. ShackBurger   | W 6.9 | 토마토, 양상추, 쉑소스가 토핑된 치즈버거");
-                    break;
-                case 2:
-                    System.out.println("2. SmokeShack    | W 8.9 | 베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거");
-                    break;
-                case 3:
-                    System.out.println("3. Cheeseburger  | W 6.9 | 포테이토 번과 비프패티, 치즈가 토핑된 치즈버거");
-                    break;
-                case 4:
-                    System.out.println("4. Hamburger     | W 5.4 | 비프패티를 기반으로 야채가 들어간 기본버거");
-                    break;
-                case 0:
-                    System.out.println("프로그램을 종료합니다.");
-                    scanner.close();
-                    return;
-                default:
-                    System.out.println("없는 메뉴입니다.");
-                    break;
+            int categoryChoice = scanner.nextInt();
+            if (categoryChoice == 0) {
+                System.out.println("프로그램을 종료합니다.");
+                break;
             }
+            if (categoryChoice < 1 || categoryChoice > menus.size()) {
+                System.out.println("잘못된 입력입니다. 다시 선택해주세요.");
+                continue;
+            }
+
+            Menu selectedMenu = menus.get(categoryChoice - 1);
+            selectedMenu.menuCategory();
+
+            System.out.print("메뉴를 선택하세요: ");
+            int itemChoice = scanner.nextInt();
+
+            if (itemChoice == 0) {
+                continue; // 뒤로 가기
+            }
+            if (itemChoice < 1 || itemChoice > selectedMenu.getMenuItems().size()) {
+                System.out.println("잘못된 입력입니다. 다시 선택해주세요.");
+                continue;
+            }
+
+            System.out.println("\n선택한 메뉴: " + selectedMenu.getMenuItems().get(itemChoice - 1));
         }
     }
 }
