@@ -11,6 +11,14 @@ public class MenuItem {
         this.description = description;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
     @Override
     public String toString() {
         return name + " | W " + price + " | " + description;
